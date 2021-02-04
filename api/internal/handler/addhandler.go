@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bookstore/lib/xhttp"
 	"net/http"
 
 	"bookstore/api/internal/logic"
@@ -14,7 +15,7 @@ func AddHandler(ctx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.AddReq
 		if err := httpx.Parse(r, &req); err != nil {
-			httpx.Error(w, err)
+			xhttp.ParamErrorResult(r,w,err)
 			return
 		}
 
@@ -24,6 +25,7 @@ func AddHandler(ctx *svc.ServiceContext) http.HandlerFunc {
 			httpx.Error(w, err)
 		} else {
 			httpx.OkJson(w, resp)
+			xhttp.HttpResult(r,w,resp,err)
 		}
 	}
 }
